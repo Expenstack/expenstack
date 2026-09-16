@@ -13,6 +13,12 @@ export const expenses = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     description: text("description").notNull(),
     value: real("value").notNull(),
+    isRevenue: integer("is_revenue", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    isInstallment: integer("is_installment", { mode: "boolean" })
+      .notNull()
+      .default(true),
     startDate: integer("start_date", { mode: "timestamp_ms" })
       .notNull()
       .$defaultFn(() => new Date()),

@@ -2,7 +2,9 @@
   "main": {
     "title": "Expenses",
     "total": "Total",
-    "unpaid": "Unpaid"
+    "unpaid": "Unpaid",
+    "revenue": "Revenue",
+    "balance": "Balance"
   },
   "graphs": {
     "title": "Graphs"
@@ -20,6 +22,9 @@
     "description": "Description",
     "descriptionPlaceholder": "Monthly groceries",
     "value": "Value",
+    "revenue": "Revenue",
+    "expiryDate": "Expiry date",
+    "expiryDatePlaceholder": "YYYY-MM-DD",
     "repeated": "Repeated",
     "fixed": "Fixed",
     "installments": "Installments",

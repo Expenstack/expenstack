@@ -11,14 +11,10 @@ export default function AddScreen() {
   const { t } = useTranslation();
   const state = useScreen();
   const month = useMonth();
-  const rangeStart = month.asMonth
-    .toPlainDate({ day: 1 })
-    .toZonedDateTime(defaultTimeZone);
 
   async function create(isPaid: boolean) {
-    let endDate: Date | null | undefined = new Date(
-      rangeStart.epochMilliseconds,
-    );
+    const startDate = new Date();
+    let endDate: Date | null | undefined = startDate;
     if (state.isInstallments) {
       const installmentCount = state.installmentCount
         ? Number.parseInt(state.installmentCount)
@@ -30,13 +26,15 @@ export default function AddScreen() {
         .toZonedDateTime(defaultTimeZone);
       endDate = new Date(nextMonthsInstant.epochMilliseconds);
     } else if (state.isRepeated) {
-      endDate = null;
+      endDate = state.expiryDate ? parseDate(state.expiryDate) : null;
     }
     const { lastInsertRowId } = await db.insert(expenses).values({
       description: state.description || "-",
       value: state.value ?? 0,
-      startDate: new Date(),
+      isRevenue: state.isRevenue,
+      isInstallment: state.isInstallments,
       endDate,
+      startDate,
     });
 
     if (isPaid) {
@@ -74,4 +72,12 @@ export default function AddScreen() {
       />
     </View>
   );
+}
+
+function parseDate(value: string) {
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error("Expiry date must use YYYY-MM-DD format");
+  }
+  return date;
 }

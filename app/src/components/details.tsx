@@ -13,6 +13,7 @@ export function Buttons({
   paid,
   remove,
   onComplete,
+  onRemoveComplete,
 }: {
   update: { label: string; fn: (e: GestureResponderEvent) => Promise<void> };
   paid: {
@@ -22,6 +23,7 @@ export function Buttons({
   };
   remove: { label: string; fn: (e: GestureResponderEvent) => Promise<void> };
   onComplete?: () => void;
+  onRemoveComplete?: () => void;
 }) {
   return (
     <View className="flex gap-4">
@@ -51,7 +53,7 @@ export function Buttons({
         variant="destructive"
         onPress={async (e) => {
           await remove.fn(e);
-          onComplete?.();
+          onRemoveComplete?.();
         }}
       >
         <Text className="text-center text-black uppercase dark:text-white">
@@ -91,6 +93,13 @@ export function Form({ state }: { state: ReturnType<typeof useScreen> }) {
           }
           className="border-b border-b-black text-black placeholder:text-gray-400 dark:border-b-white dark:text-white"
         />
+      </View>
+
+      <View className="flex-row gap-2">
+        <Checkbox value={state.isRevenue} onValueChange={state.setIsRevenue} />
+        <Text className="text-black dark:text-white">
+          {t("update.revenue")}
+        </Text>
       </View>
 
       <View className="flex-row gap-2">
@@ -147,6 +156,20 @@ export function Form({ state }: { state: ReturnType<typeof useScreen> }) {
           />
         </View>
       )}
+
+      {state.isRepeated && !state.isInstallments && (
+        <View>
+          <Text className="text-black dark:text-white">
+            {t("update.expiryDate")}
+          </Text>
+          <TextInput
+            placeholder={t("update.expiryDatePlaceholder")}
+            className="border-b border-b-black text-black placeholder:text-gray-400 dark:border-b-white dark:text-white"
+            value={state.expiryDate}
+            onChangeText={state.setExpiryDate}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -158,6 +181,8 @@ export function useScreen(
     isRepeated: boolean;
     isInstallments: boolean;
     installmentCount: string;
+    expiryDate: string;
+    isRevenue: boolean;
   }> = {},
 ) {
   useEffect(() => {
@@ -179,6 +204,8 @@ export function useScreen(
   const [installmentCount, setInstallmentCount] = useState(
     initialValues.installmentCount ?? "1",
   );
+  const [expiryDate, setExpiryDate] = useState(initialValues.expiryDate ?? "");
+  const [isRevenue, setIsRevenue] = useState(initialValues.isRevenue ?? false);
 
   return {
     description,
@@ -191,5 +218,9 @@ export function useScreen(
     setIsInInstallments,
     installmentCount,
     setInstallmentCount,
+    expiryDate,
+    setExpiryDate,
+    isRevenue,
+    setIsRevenue,
   };
 }

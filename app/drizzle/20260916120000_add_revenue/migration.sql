@@ -1,0 +1,1 @@
+ALTER TABLE `expenses` ADD `is_revenue` integer DEFAULT false NOT NULL;

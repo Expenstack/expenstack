@@ -105,12 +105,15 @@ function UpdateContent({
     description: expense.description,
     installmentCount: String(initialInstallmentCount),
     isInstallments:
+      expense.isInstallment &&
       expense.endDate != null &&
       expense.endDate.getTime() !== expense.startDate.getTime(),
     isRepeated:
       expense.endDate == null ||
       expense.endDate.getTime() !== expense.startDate.getTime(),
     value: expense.value || null,
+    expiryDate: expense.endDate?.toISOString().slice(0, 10) ?? "",
+    isRevenue: expense.isRevenue,
   });
   const month = useMonth();
 
@@ -135,7 +138,7 @@ function UpdateContent({
 
         endDate = new Date(nextMonthsInstant.epochMilliseconds);
       } else {
-        endDate = null;
+        endDate = state.expiryDate ? parseDate(state.expiryDate) : null;
       }
     }
 
@@ -144,6 +147,8 @@ function UpdateContent({
       .set({
         value: state.value ?? undefined,
         description: state.description || undefined,
+        isRevenue: state.isRevenue,
+        isInstallment: state.isInstallments,
         endDate,
       })
       .where(eq(expenses.id, expense.id));
@@ -189,7 +194,21 @@ function UpdateContent({
           fn: () => remove(),
           label: t("update.remove"),
         }}
+        onRemoveComplete={() =>
+          router.replace({
+            pathname: "/[dateString]",
+            params: { dateString: month.asString },
+          })
+        }
       />
     </View>
   );
+}
+
+function parseDate(value: string) {
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error("Expiry date must use YYYY-MM-DD format");
+  }
+  return date;
 }

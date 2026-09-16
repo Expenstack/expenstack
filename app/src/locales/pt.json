@@ -2,7 +2,9 @@
   "main": {
     "title": "Despesas",
     "total": "Total",
-    "unpaid": "A pagar"
+    "unpaid": "A pagar",
+    "revenue": "Receita",
+    "balance": "Saldo"
   },
   "graphs": {
     "title": "Gráficos"
@@ -20,6 +22,9 @@
     "description": "Descrição",
     "descriptionPlaceholder": "Compras do mês",
     "value": "Valor",
+    "revenue": "Receita",
+    "expiryDate": "Data de expiração",
+    "expiryDatePlaceholder": "AAAA-MM-DD",
     "repeated": "Repetido",
     "fixed": "Fixo",
     "installments": "Parcelado",

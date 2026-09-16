@@ -89,7 +89,9 @@ export default function ExpenseListScreen() {
             <View
               className={cn(
                 "will-change-variable flex w-full flex-row justify-between border-b border-gray-400 p-4",
-                expense.payments.length && "bg-green-200 dark:bg-green-600",
+                expense.isRevenue
+                  ? "bg-blue-200 dark:bg-blue-600"
+                  : expense.payments.length && "bg-green-200 dark:bg-green-600",
               )}
             >
               <View>
@@ -158,22 +160,37 @@ function Total({
 }) {
   const { t } = useTranslation();
   const total = expensesData.reduce(
-    (acc, expense) => (acc += expense.value),
+    (acc, expense) => (acc += expense.isRevenue ? 0 : expense.value),
+    0,
+  );
+  const revenue = expensesData.reduce(
+    (acc, expense) => (acc += expense.isRevenue ? expense.value : 0),
     0,
   );
   const totalPaid = paymentsData.reduce(
-    (acc, payment) => (acc += payment.value),
+    (acc, payment) =>
+      (acc += expensesData.find((expense) => expense.id === payment.expenseId)
+        ?.isRevenue
+        ? 0
+        : payment.value),
     0,
   );
   const unpaid = total - totalPaid;
+  const balance = revenue - total;
 
   return (
     <View className="bg-gray-200 p-4 dark:bg-gray-700">
+      <Text className="text-black dark:text-white">
+        {t("main.revenue")}: {moneyFormatter.format(revenue)}
+      </Text>
       <Text className="text-black dark:text-white">
         {t("main.total")}: {moneyFormatter.format(total)}
       </Text>
       <Text className="text-black dark:text-white">
         {t("main.unpaid")}: {moneyFormatter.format(unpaid)}
+      </Text>
+      <Text className="text-black dark:text-white">
+        {t("main.balance")}: {moneyFormatter.format(balance)}
       </Text>
     </View>
   );
