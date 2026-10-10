@@ -1,1 +1,0 @@
-ALTER TABLE `expenses` ADD `is_installment` integer DEFAULT true NOT NULL;

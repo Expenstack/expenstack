@@ -1,7 +1,9 @@
-# Expenstack
+# 💰 Expenstack
 
-An expense tracker for mobile devices.
+> A free and open source expense tracker app.
 
-## TODO
+# License information
 
-- [ ] Add picking end dates for expenses instead of automatic (_**this is next**_)
+Copyright &copy; 2026 sprucepad.
+
+Licensed under the GNU General Public License 3.0 (GPL-3.0-only). See [COPYING](COPYING) for details.

@@ -1,0 +1,33 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
+
+@theme {
+  --color-background: #eeeeee;
+  --color-foreground: #111111;
+  --color-accent: #ffffff;
+  --color-accent-foreground: #111111;
+  --color-primary: #3366cc;
+  --color-primary-foreground: #eeeeee;
+  --color-secondary: #2bab9e;
+  --color-secondary-foreground: #eeeeee;
+  --color-muted: #cccccc;
+  --color-muted-foreground: #999999;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #000000;
+    --color-foreground: #eeeeee;
+    --color-accent: #111111;
+    --color-accent-foreground: #eeeeee;
+    --color-primary: #3366cc;
+    --color-primary-foreground: #eeeeee;
+    --color-secondary: #2bab9e;
+    --color-secondary-foreground: #eeeeee;
+    --color-muted: #333333;
+    --color-muted-foreground: #999999;
+  }
+}
